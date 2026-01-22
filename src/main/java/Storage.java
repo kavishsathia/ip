@@ -1,0 +1,22 @@
+public class Storage {
+    private final String[] data;
+    private int next;
+
+    public Storage(int length) {
+        this.data = new String[100];
+        this.next = 0;
+    }
+
+    public void store(String s) {
+        this.data[this.next] = s;
+        this.next++;
+    }
+
+    public String list() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < this.next; i++) {
+            s.append(i + 1).append(". ").append(this.data[i]).append("\n");
+        }
+        return s.toString();
+    }
+}

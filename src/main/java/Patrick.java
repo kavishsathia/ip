@@ -1,6 +1,8 @@
 import java.util.Scanner;
+
 public class Patrick {
     public static void main(String[] args) {
+        Storage storage = new Storage(100);
         Scanner scanner = new Scanner(System.in);
 
         String logo = " ____       _        _      _    \n"
@@ -17,7 +19,16 @@ public class Patrick {
                 System.out.println("Assistant: Bye. Hope to see you again soon!");
                 break;
             }
-            System.out.print("Assistant: " + input + "\nUser: ");
+
+            if (input.equals("list")) {
+                System.out.print("Assistant: Here are the tasks in your list:\n");
+                System.out.print(storage.list());
+                System.out.print("User: ");
+                continue;
+            }
+
+            storage.store(input);
+            System.out.print("Assistant: I've added \"" + input + "\"\nUser: ");
         }
     }
 }
