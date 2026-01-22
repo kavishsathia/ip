@@ -1,3 +1,4 @@
+
 public class Storage {
     private final Task[] data;
     private int next;
@@ -12,7 +13,10 @@ public class Storage {
         this.next++;
     }
 
-    public Task get(int index) {
+    public Task get(int index) throws StorageRetrievalException {
+        if (index < 0 || index >= this.next) {
+            throw new StorageRetrievalException("Invalid index: " + (index + 1));
+        }
         return this.data[index];
     }
 
