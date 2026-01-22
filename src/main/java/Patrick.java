@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Patrick {
     public static void main(String[] args) {
-        Storage storage = new Storage(100);
+        Storage storage = new Storage();
         Scanner scanner = new Scanner(System.in);
 
         String logo = " ____       _        _      _    \n"
@@ -44,7 +44,7 @@ public class Patrick {
                     System.out.print("Assistant: " + e.getMessage() + "\nUser: ");
                     continue;
                 }
-                
+
                 task.markAsDone();
                 System.out.print("Assistant: Nice! I've marked this task as done:\n  " + task + "\nUser: ");
             }
@@ -70,6 +70,28 @@ public class Patrick {
 
                 task.markAsUndone();
                 System.out.print("Assistant: OK, I've marked this task as not done yet:\n  " + task + "\nUser: ");
+            }
+
+            else if (input.startsWith("delete")) {
+                String[] parts = input.split(" ");
+                int index = -1;
+                try {
+                    index = Integer.parseInt(parts[1]) - 1;
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    System.out.print("Assistant: Please provide a valid task number. Usage: delete <number>\nUser: ");
+                    continue;
+                }
+
+                Task task;
+
+                try {
+                    task = storage.pop(index);
+                } catch (StorageRetrievalException e) {
+                    System.out.print("Assistant: " + e.getMessage() + "\nUser: ");
+                    continue;
+                }
+
+                System.out.print("Assistant: Noted. I've removed this task:\n  " + task + "\nUser: ");
             }
 
             else if (input.startsWith("todo")) {
