@@ -5,26 +5,21 @@ public class Patrick {
         Storage storage = new Storage();
         Scanner scanner = new Scanner(System.in);
 
-        String logo = " ____       _        _      _    \n"
-                + "|  _ \\ __ _| |_ _ __(_) ___| | __\n"
-                + "| |_) / _` | __| '__| |/ __| |/ /\n"
-                + "|  __/ (_| | |_| |  | | (__|   < \n"
-                + "|_|   \\__,_|\\__|_|  |_|\\___|_|\\_\\\n";
-        System.out.println("Assistant: Hello from\n" + logo);
-        System.out.print("What can I do for you?\nUser: ");
+        System.out.println(Message.GREETING.format(Message.LOGO));
+        System.out.print(Message.PROMPT);
 
         while (true) {
             String input = scanner.nextLine();
 
             if (input.equals("bye")) {
-                System.out.println("Assistant: Bye. Hope to see you again soon!");
+                System.out.println(Message.BYE);
                 break;
             }
 
             else if (input.equals("list")) {
-                System.out.print("Assistant: Here are the tasks in your list:\n");
+                System.out.print(Message.LIST_HEADER);
                 System.out.print(storage.list());
-                System.out.print("User: ");
+                System.out.print(Message.USER_PROMPT);
             }
 
             else if (input.startsWith("mark")) {
@@ -33,7 +28,7 @@ public class Patrick {
                 try {
                     index = Integer.parseInt(parts[1]) - 1;
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    System.out.print("Assistant: Please provide a valid task number. Usage: mark <number>\nUser: ");
+                    System.out.print(Message.ERROR_INVALID_MARK);
                     continue;
                 }
                 Task task;
@@ -41,12 +36,12 @@ public class Patrick {
                 try {
                     task = storage.get(index);
                 } catch (StorageRetrievalException e) {
-                    System.out.print("Assistant: " + e.getMessage() + "\nUser: ");
+                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
                     continue;
                 }
 
                 task.markAsDone();
-                System.out.print("Assistant: Nice! I've marked this task as done:\n  " + task + "\nUser: ");
+                System.out.print(Message.TASK_MARKED.format(task));
             }
 
             else if (input.startsWith("unmark")) {
@@ -55,7 +50,7 @@ public class Patrick {
                 try {
                     index = Integer.parseInt(parts[1]) - 1;
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    System.out.print("Assistant: Please provide a valid task number. Usage: unmark <number>\nUser: ");
+                    System.out.print(Message.ERROR_INVALID_UNMARK);
                     continue;
                 }
 
@@ -64,12 +59,12 @@ public class Patrick {
                 try {
                     task = storage.get(index);
                 } catch (StorageRetrievalException e) {
-                    System.out.print("Assistant: " + e.getMessage() + "\nUser: ");
+                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
                     continue;
                 }
 
                 task.markAsUndone();
-                System.out.print("Assistant: OK, I've marked this task as not done yet:\n  " + task + "\nUser: ");
+                System.out.print(Message.TASK_UNMARKED.format(task));
             }
 
             else if (input.startsWith("delete")) {
@@ -78,7 +73,7 @@ public class Patrick {
                 try {
                     index = Integer.parseInt(parts[1]) - 1;
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    System.out.print("Assistant: Please provide a valid task number. Usage: delete <number>\nUser: ");
+                    System.out.print(Message.ERROR_INVALID_DELETE);
                     continue;
                 }
 
@@ -87,27 +82,27 @@ public class Patrick {
                 try {
                     task = storage.pop(index);
                 } catch (StorageRetrievalException e) {
-                    System.out.print("Assistant: " + e.getMessage() + "\nUser: ");
+                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
                     continue;
                 }
 
-                System.out.print("Assistant: Noted. I've removed this task:\n  " + task + "\nUser: ");
+                System.out.print(Message.TASK_DELETED.format(task));
             }
 
             else if (input.startsWith("todo")) {
                 if (input.length() <= 5) {
-                    System.out.print("Assistant: The description of a todo cannot be empty.\nUser: ");
+                    System.out.print(Message.ERROR_EMPTY_TODO);
                     continue;
                 }
                 String description = input.substring(5);
                 Todo todo = new Todo(description);
                 storage.store(todo);
-                System.out.print("Assistant: I've added \"" + todo + "\"\nUser: ");
+                System.out.print(Message.TASK_ADDED.format(todo));
             }
 
             else if (input.startsWith("event")) {
                 if (input.length() <= 6) {
-                    System.out.print("Assistant: The description of an event cannot be empty.\nUser: ");
+                    System.out.print(Message.ERROR_EMPTY_EVENT);
                     continue;
                 }
 
@@ -115,7 +110,7 @@ public class Patrick {
                 String[] parts = content.split(" /from ");
 
                 if (parts.length < 2) {
-                    System.out.print("Assistant: Missing '/from'. Usage: event <desc> /from <start> /to <end>\nUser: ");
+                    System.out.print(Message.ERROR_MISSING_FROM);
                     continue;
                 }
 
@@ -123,7 +118,7 @@ public class Patrick {
                 String[] times = parts[1].split(" /to ");
 
                 if (times.length < 2) {
-                    System.out.print("Assistant: Missing '/to'. Usage: event <desc> /from <start> /to <end>\nUser: ");
+                    System.out.print(Message.ERROR_MISSING_TO);
                     continue;
                 }
 
@@ -132,12 +127,12 @@ public class Patrick {
 
                 Event event = new Event(description, "from " + start + " to " + end);
                 storage.store(event);
-                    System.out.print("Assistant: I've added \"" + event + "\"\nUser: ");
+                System.out.print(Message.TASK_ADDED.format(event));
             }
 
             else if (input.startsWith("deadline")) {
                 if (input.length() <= 9) {
-                    System.out.print("Assistant: The description of a deadline cannot be empty.\nUser: ");
+                    System.out.print(Message.ERROR_EMPTY_DEADLINE);
                     continue;
                 }
 
@@ -145,7 +140,7 @@ public class Patrick {
                 String[] parts = content.split(" /by ");
 
                 if (parts.length < 2) {
-                    System.out.print("Assistant: Missing '/by'. Usage: deadline <desc> /by <when>\nUser: ");
+                    System.out.print(Message.ERROR_MISSING_BY);
                     continue;
                 }
 
@@ -154,11 +149,11 @@ public class Patrick {
 
                 Deadline deadline = new Deadline(description, by);
                 storage.store(deadline);
-                System.out.print("Assistant: I've added \"" + deadline + "\"\nUser: ");
+                System.out.print(Message.TASK_ADDED.format(deadline));
             }
 
             else {
-                System.out.print("Assistant: Unknown command. Try: todo, deadline, event, list, mark, unmark, bye\nUser: ");
+                System.out.print(Message.ERROR_UNKNOWN_COMMAND);
             }
         }
     }
