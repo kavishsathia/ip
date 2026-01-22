@@ -5,6 +5,9 @@ public class Patrick {
                 + "| |_) / _` | __| '__| |/ __| |/ /\n"
                 + "|  __/ (_| | |_| |  | | (__|   < \n"
                 + "|_|   \\__,_|\\__|_|  |_|\\___|_|\\_\\\n";
-        System.out.println("Hello from\n" + logo);
+        System.out.println("Assistant: Hello from\n" + logo);
+        System.out.println("What can I do for you?");
+
+        System.out.println("Assistant: Bye. Hope to see you again soon!");
     }
 }
