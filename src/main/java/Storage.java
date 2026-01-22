@@ -1,15 +1,19 @@
 public class Storage {
-    private final String[] data;
+    private final Task[] data;
     private int next;
 
     public Storage(int length) {
-        this.data = new String[100];
+        this.data = new Task[100];
         this.next = 0;
     }
 
     public void store(String s) {
-        this.data[this.next] = s;
+        this.data[this.next] = new Task(s);
         this.next++;
+    }
+
+    public Task get(int index) {
+        return this.data[index];
     }
 
     public String list() {
