@@ -15,7 +15,7 @@ public class Patrick {
 
         while (true) {
             String input = scanner.nextLine();
-            
+
             if (input.equals("bye")) {
                 System.out.println("Assistant: Bye. Hope to see you again soon!");
                 break;
@@ -43,9 +43,39 @@ public class Patrick {
                 System.out.print("Assistant: OK, I've marked this task as not done yet:\n  " + task + "\nUser: ");
             }
 
+            else if (input.startsWith("todo")) {
+                String description = input.substring(5);
+                Todo todo = new Todo(description);
+                storage.store(todo);
+                System.out.print("Assistant: I've added \"" + todo + "\"\nUser: ");
+            }
+
+            else if (input.startsWith("event")) {
+                String content = input.substring(6);
+                String[] parts = content.split(" /from ");
+                String description = parts[0];
+                String[] times = parts[1].split(" /to ");
+                String start = times[0];
+                String end = times[1];
+
+                Event event = new Event(description, "from " + start + " to " + end);
+                storage.store(event);
+                    System.out.print("Assistant: I've added \"" + event + "\"\nUser: ");
+            }
+
+            else if (input.startsWith("deadline")) {
+                String content = input.substring(9);
+                String[] parts = content.split(" /by ");
+                String description = parts[0];
+                String by = parts[1];
+
+                Deadline deadline = new Deadline(description, by);
+                storage.store(deadline);
+                System.out.print("Assistant: I've added \"" + deadline + "\"\nUser: ");
+            }
+
             else {
-                storage.store(input);
-                System.out.print("Assistant: I've added \"" + input + "\"\nUser: ");
+                System.out.print("Assistant: I'm sorry, I don't understand that command.\nUser: ");
             }
         }
     }

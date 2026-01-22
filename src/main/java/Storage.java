@@ -7,8 +7,8 @@ public class Storage {
         this.next = 0;
     }
 
-    public void store(String s) {
-        this.data[this.next] = new Task(s);
+    public void store(Task s) {
+        this.data[this.next] = s;
         this.next++;
     }
 
