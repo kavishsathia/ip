@@ -14,13 +14,26 @@ import patrick.task.Task;
 import patrick.task.TaskList;
 import patrick.task.Todo;
 
+/**
+ * Handles reading from and writing to the task data file.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage instance with the specified file path.
+     *
+     * @param filePath Path to the data file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the data file.
+     *
+     * @return A list of tasks read from the file, or an empty list if the file does not exist.
+     */
     public ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>();
         Path path = Paths.get(filePath);
@@ -79,6 +92,11 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Writes the given task list to the data file.
+     *
+     * @param tasks The task list to save.
+     */
     public void writeFile(TaskList tasks) {
         Path path = Paths.get(filePath);
 

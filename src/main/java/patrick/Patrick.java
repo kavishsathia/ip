@@ -3,11 +3,20 @@ package patrick;
 import patrick.command.Command;
 import patrick.task.TaskList;
 
+/**
+ * Main class for the Patrick chatbot application.
+ * Initialises the application and starts the command loop.
+ */
 public class Patrick {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Constructs a Patrick instance with the specified file path for storage.
+     *
+     * @param filePath Path to the file used for saving and loading tasks.
+     */
     public Patrick(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -19,6 +28,9 @@ public class Patrick {
         }
     }
 
+    /**
+     * Runs the main command loop, reading and executing user commands until exit.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -34,6 +46,7 @@ public class Patrick {
         }
     }
 
+    /** Entry point of the application. */
     public static void main(String[] args) {
         new Patrick("data/patrick.txt").run();
     }
