@@ -1,38 +1,90 @@
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Storage {
-    private final ArrayList<Task> data;
+    private final String filePath;
 
-    public Storage() {
-        this.data = new ArrayList<>();
+    public Storage(String filePath) {
+        this.filePath = filePath;
     }
 
-    public void store(Task s) {
-        this.data.add(s);
-    }
+    public ArrayList<Task> readFile() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        Path path = Paths.get(filePath);
 
-    public Task get(int index) throws StorageRetrievalException {
-        if (index < 0 || index >= this.data.size()) {
-            throw new StorageRetrievalException("Invalid index: " + (index + 1));
+        if (!Files.exists(path)) {
+            return tasks;
         }
-        return this.data.get(index);
+
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(path);
+        } catch (IOException e) {
+            return tasks;
+        }
+
+        for (String line : lines) {
+            String[] parts = line.split(" \\| ");
+            if (parts.length < 3) {
+                continue;
+            }
+            String type = parts[0].trim();
+            boolean isDone = parts[1].trim().equals("1");
+            String description = parts[2].trim();
+
+            Task task = null;
+            switch (type) {
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                if (parts.length < 4) {
+                    continue;
+                }
+                task = new Deadline(description, parts[3].trim());
+                break;
+            case "E":
+                if (parts.length < 4) {
+                    continue;
+                }
+                task = new Event(description, parts[3].trim());
+                break;
+            default:
+                continue;
+            }
+
+            if (isDone) {
+                task.markAsDone();
+            }
+            tasks.add(task);
+        }
+
+        return tasks;
     }
 
-    public Task pop(int index) throws StorageRetrievalException {
-        if (index < 0 || index >= this.data.size()) {
-            throw new StorageRetrievalException("Invalid index: " + (index + 1));
-        }
-        Task removed = this.data.remove(index);
-        return removed;
-    }
+    public void writeFile(ArrayList<Task> tasks) {
+        Path path = Paths.get(filePath);
 
-    public String list() {
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < this.data.size(); i++) {
-            s.append(i + 1).append(". ").append(this.data.get(i)).append("\n");
+        try {
+            Path parent = path.getParent();
+            if (parent != null && !Files.exists(parent)) {
+                Files.createDirectories(parent);
+            }
+            FileWriter writer = new FileWriter(path.toFile());
+            for (Task task : tasks) {
+                writer.write(task.toFileString() + System.lineSeparator());
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks: " + e.getMessage());
         }
-        return s.toString();
     }
 }

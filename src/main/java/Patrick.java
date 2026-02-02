@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Patrick {
     public static void main(String[] args) {
-        Storage storage = new Storage();
+        Storage storage = new Storage("data/patrick.txt");
+        ArrayList<Task> tasks = storage.readFile();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println(Message.GREETING.format(Message.LOGO));
@@ -18,7 +20,11 @@ public class Patrick {
 
             else if (input.equals("list")) {
                 System.out.print(Message.LIST_HEADER);
-                System.out.print(storage.list());
+                StringBuilder s = new StringBuilder();
+                for (int i = 0; i < tasks.size(); i++) {
+                    s.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+                }
+                System.out.print(s);
                 System.out.print(Message.USER_PROMPT);
             }
 
@@ -31,16 +37,15 @@ public class Patrick {
                     System.out.print(Message.ERROR_INVALID_MARK);
                     continue;
                 }
-                Task task;
 
-                try {
-                    task = storage.get(index);
-                } catch (StorageRetrievalException e) {
-                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
+                if (index < 0 || index >= tasks.size()) {
+                    System.out.print(Message.ERROR_STORAGE.format("Invalid index: " + (index + 1)));
                     continue;
                 }
 
+                Task task = tasks.get(index);
                 task.markAsDone();
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_MARKED.format(task));
             }
 
@@ -54,16 +59,14 @@ public class Patrick {
                     continue;
                 }
 
-                Task task;
-
-                try {
-                    task = storage.get(index);
-                } catch (StorageRetrievalException e) {
-                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
+                if (index < 0 || index >= tasks.size()) {
+                    System.out.print(Message.ERROR_STORAGE.format("Invalid index: " + (index + 1)));
                     continue;
                 }
 
+                Task task = tasks.get(index);
                 task.markAsUndone();
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_UNMARKED.format(task));
             }
 
@@ -77,15 +80,13 @@ public class Patrick {
                     continue;
                 }
 
-                Task task;
-
-                try {
-                    task = storage.pop(index);
-                } catch (StorageRetrievalException e) {
-                    System.out.print(Message.ERROR_STORAGE.format(e.getMessage()));
+                if (index < 0 || index >= tasks.size()) {
+                    System.out.print(Message.ERROR_STORAGE.format("Invalid index: " + (index + 1)));
                     continue;
                 }
 
+                Task task = tasks.remove(index);
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_DELETED.format(task));
             }
 
@@ -96,7 +97,8 @@ public class Patrick {
                 }
                 String description = input.substring(5);
                 Todo todo = new Todo(description);
-                storage.store(todo);
+                tasks.add(todo);
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_ADDED.format(todo));
             }
 
@@ -126,7 +128,8 @@ public class Patrick {
                 String end = times[1];
 
                 Event event = new Event(description, "from " + start + " to " + end);
-                storage.store(event);
+                tasks.add(event);
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_ADDED.format(event));
             }
 
@@ -148,7 +151,8 @@ public class Patrick {
                 String by = parts[1];
 
                 Deadline deadline = new Deadline(description, by);
-                storage.store(deadline);
+                tasks.add(deadline);
+                storage.writeFile(tasks);
                 System.out.print(Message.TASK_ADDED.format(deadline));
             }
 
