@@ -1,3 +1,9 @@
+package patrick.command;
+
+import patrick.Storage;
+import patrick.Ui;
+import patrick.task.Task;
+import patrick.task.TaskList;
 
 public class AddCommand extends Command {
     private final Task task;

@@ -1,3 +1,9 @@
+package patrick.command;
+
+import patrick.Storage;
+import patrick.Ui;
+import patrick.task.Task;
+import patrick.task.TaskList;
 
 public class DeleteCommand extends Command {
     private final int index;

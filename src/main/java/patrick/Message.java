@@ -1,3 +1,5 @@
+package patrick;
+
 public enum Message {
     LOGO(" ____       _        _      _    \n"
             + "|  _ \\ __ _| |_ _ __(_) ___| | __\n"

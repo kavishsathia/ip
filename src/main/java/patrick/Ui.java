@@ -1,4 +1,9 @@
+package patrick;
+
 import java.util.Scanner;
+
+import patrick.task.Task;
+import patrick.task.TaskList;
 
 public class Ui {
     private final Scanner scanner;

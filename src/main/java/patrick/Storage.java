@@ -1,5 +1,5 @@
+package patrick;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,6 +8,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import patrick.task.Deadline;
+import patrick.task.Event;
+import patrick.task.Task;
+import patrick.task.TaskList;
+import patrick.task.Todo;
 
 public class Storage {
     private final String filePath;

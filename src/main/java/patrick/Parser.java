@@ -1,7 +1,19 @@
+package patrick;
+
 import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import patrick.command.AddCommand;
+import patrick.command.Command;
+import patrick.command.DeleteCommand;
+import patrick.command.ExitCommand;
+import patrick.command.ListCommand;
+import patrick.command.MarkCommand;
+import patrick.command.UnmarkCommand;
+import patrick.task.Deadline;
+import patrick.task.Event;
+import patrick.task.Todo;
 
 public class Parser {
     private static final Pattern TODO_PATTERN = Pattern.compile("^todo\\s+(.+)$");

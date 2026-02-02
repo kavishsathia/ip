@@ -1,3 +1,7 @@
+package patrick;
+
+import patrick.command.Command;
+import patrick.task.TaskList;
 
 public class Patrick {
     private Storage storage;
