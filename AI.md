@@ -3,3 +3,4 @@
 3. Updated README.md with the new Patrick ASCII art logo
 4. Wrote specific error messages for invalid commands (mark, unmark, event, deadline)
 5. Refactored Patrick.java to use the Message enum instead of hardcoded strings
+6. Extracted Ui, TaskList, Parser (with regex), and Command class hierarchy from Patrick.java to follow single-responsibility principle
