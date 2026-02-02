@@ -49,7 +49,11 @@ public class Storage {
                 if (parts.length < 4) {
                     continue;
                 }
-                task = new Deadline(description, parts[3].trim());
+                try {
+                    task = Deadline.parse(description, parts[3].trim());
+                } catch (Exception e) {
+                    continue;
+                }
                 break;
             case "E":
                 if (parts.length < 4) {

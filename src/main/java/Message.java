@@ -22,6 +22,7 @@ public enum Message {
     ERROR_MISSING_FROM("Assistant: Missing '/from'. Usage: event <desc> /from <start> /to <end>\nUser: "),
     ERROR_MISSING_TO("Assistant: Missing '/to'. Usage: event <desc> /from <start> /to <end>\nUser: "),
     ERROR_MISSING_BY("Assistant: Missing '/by'. Usage: deadline <desc> /by <when>\nUser: "),
+    ERROR_INVALID_DATE("Assistant: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-12-02).\nUser: "),
     ERROR_UNKNOWN_COMMAND("Assistant: Unknown command. Try: todo, deadline, event, list, mark, unmark, bye\nUser: "),
     ERROR_STORAGE("Assistant: %s\nUser: ");
 

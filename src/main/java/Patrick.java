@@ -1,3 +1,4 @@
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -150,7 +151,13 @@ public class Patrick {
                 String description = parts[0];
                 String by = parts[1];
 
-                Deadline deadline = new Deadline(description, by);
+                Deadline deadline;
+                try {
+                    deadline = Deadline.parse(description, by);
+                } catch (DateTimeParseException e) {
+                    System.out.print(Message.ERROR_INVALID_DATE);
+                    continue;
+                }
                 tasks.add(deadline);
                 storage.writeFile(tasks);
                 System.out.print(Message.TASK_ADDED.format(deadline));
