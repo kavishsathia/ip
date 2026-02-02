@@ -1,0 +1,28 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Build shadow JAR
+        run: ./gradlew shadowJar
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/libs/patrick.jar
