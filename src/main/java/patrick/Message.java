@@ -28,7 +28,9 @@ public enum Message {
     ERROR_MISSING_TO("Assistant: Missing '/to'. Usage: event <desc> /from <start> /to <end>\nUser: "),
     ERROR_MISSING_BY("Assistant: Missing '/by'. Usage: deadline <desc> /by <when>\nUser: "),
     ERROR_INVALID_DATE("Assistant: Invalid date format. Please use yyyy-mm-dd (e.g., 2019-12-02).\nUser: "),
-    ERROR_UNKNOWN_COMMAND("Assistant: Unknown command. Try: todo, deadline, event, list, mark, unmark, bye\nUser: "),
+    FIND_HEADER("Assistant: Here are the matching tasks in your list:\n"),
+    ERROR_EMPTY_FIND("Assistant: The keyword for find cannot be empty.\nUser: "),
+    ERROR_UNKNOWN_COMMAND("Assistant: Unknown command. Try: todo, deadline, event, list, mark, unmark, find, bye\nUser: "),
     ERROR_STORAGE("Assistant: %s\nUser: ");
 
     private final String text;

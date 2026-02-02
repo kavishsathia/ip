@@ -10,6 +10,7 @@ import patrick.command.AddCommand;
 import patrick.command.Command;
 import patrick.command.DeleteCommand;
 import patrick.command.ExitCommand;
+import patrick.command.FindCommand;
 import patrick.command.ListCommand;
 import patrick.command.MarkCommand;
 import patrick.command.UnmarkCommand;
@@ -55,6 +56,16 @@ public class ParserTest {
     @Test
     public void parse_validDelete_returnsDeleteCommand() throws PatrickException {
         assertInstanceOf(DeleteCommand.class, Parser.parse("delete 1"));
+    }
+
+    @Test
+    public void parse_validFind_returnsFindCommand() throws PatrickException {
+        assertInstanceOf(FindCommand.class, Parser.parse("find book"));
+    }
+
+    @Test
+    public void parse_emptyFind_throwsException() {
+        assertThrows(PatrickException.class, () -> Parser.parse("find"));
     }
 
     @Test

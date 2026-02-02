@@ -1,5 +1,6 @@
 package patrick;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import patrick.task.Task;
@@ -89,6 +90,21 @@ public class Ui {
      */
     public void showTaskUnmarked(Task task) {
         System.out.print(Message.TASK_UNMARKED.format(task));
+    }
+
+    /**
+     * Displays the list of tasks matching a search keyword.
+     *
+     * @param matchingTasks The list of matching tasks.
+     */
+    public void showFindResults(ArrayList<Task> matchingTasks) {
+        System.out.print(Message.FIND_HEADER);
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            s.append(i + 1).append(".").append(matchingTasks.get(i)).append("\n");
+        }
+        System.out.print(s);
+        System.out.print(Message.USER_PROMPT);
     }
 
     /**

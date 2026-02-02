@@ -8,6 +8,7 @@ import patrick.command.AddCommand;
 import patrick.command.Command;
 import patrick.command.DeleteCommand;
 import patrick.command.ExitCommand;
+import patrick.command.FindCommand;
 import patrick.command.ListCommand;
 import patrick.command.MarkCommand;
 import patrick.command.UnmarkCommand;
@@ -25,6 +26,7 @@ public class Parser {
     private static final Pattern MARK_PATTERN = Pattern.compile("^mark\\s+(\\d+)$");
     private static final Pattern UNMARK_PATTERN = Pattern.compile("^unmark\\s+(\\d+)$");
     private static final Pattern DELETE_PATTERN = Pattern.compile("^delete\\s+(\\d+)$");
+    private static final Pattern FIND_PATTERN = Pattern.compile("^find\\s+(.+)$");
 
     /**
      * Parses the given user input string and returns the appropriate command.
@@ -62,6 +64,11 @@ public class Parser {
             return new DeleteCommand(index);
         }
 
+        matcher = FIND_PATTERN.matcher(input);
+        if (matcher.matches()) {
+            return new FindCommand(matcher.group(1));
+        }
+
         matcher = TODO_PATTERN.matcher(input);
         if (matcher.matches()) {
             return new AddCommand(new Todo(matcher.group(1)));
@@ -91,6 +98,9 @@ public class Parser {
         }
         if (input.startsWith("delete")) {
             throw new PatrickException(Message.ERROR_INVALID_DELETE.toString());
+        }
+        if (input.startsWith("find")) {
+            throw new PatrickException(Message.ERROR_EMPTY_FIND.toString());
         }
         if (input.startsWith("todo")) {
             throw new PatrickException(Message.ERROR_EMPTY_TODO.toString());
