@@ -16,7 +16,7 @@ public class Storage {
         this.filePath = filePath;
     }
 
-    public ArrayList<Task> readFile() {
+    public ArrayList<Task> load() {
         ArrayList<Task> tasks = new ArrayList<>();
         Path path = Paths.get(filePath);
 
@@ -74,7 +74,7 @@ public class Storage {
         return tasks;
     }
 
-    public void writeFile(ArrayList<Task> tasks) {
+    public void writeFile(TaskList tasks) {
         Path path = Paths.get(filePath);
 
         try {
@@ -83,7 +83,7 @@ public class Storage {
                 Files.createDirectories(parent);
             }
             FileWriter writer = new FileWriter(path.toFile());
-            for (Task task : tasks) {
+            for (Task task : tasks.getTasks()) {
                 writer.write(task.toFileString() + System.lineSeparator());
             }
             writer.close();

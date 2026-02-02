@@ -1,0 +1,4 @@
+T | 0 | read book
+T | 0 | return book
+D | 0 | submit report | 2019-12-02
+E | 0 | project meeting | from Mon 2pm to 4pm

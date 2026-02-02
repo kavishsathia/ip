@@ -8,25 +8,25 @@ Assistant: Hello from
 What can I do for you?
 User: Assistant: I've added "[T][ ] read book"
 User: Assistant: I've added "[T][ ] return book"
-User: Assistant: I've added "[D][ ] submit report (by: Sunday)"
+User: Assistant: I've added "[D][ ] submit report (by: Dec 02 2019)"
 User: Assistant: I've added "[E][ ] project meeting (at: from Mon 2pm to 4pm)"
 User: Assistant: Here are the tasks in your list:
 1. [T][ ] read book
 2. [T][ ] return book
-3. [D][ ] submit report (by: Sunday)
+3. [D][ ] submit report (by: Dec 02 2019)
 4. [E][ ] project meeting (at: from Mon 2pm to 4pm)
 User: Assistant: Nice! I've marked this task as done:
   [T][X] read book
 User: Assistant: Here are the tasks in your list:
 1. [T][X] read book
 2. [T][ ] return book
-3. [D][ ] submit report (by: Sunday)
+3. [D][ ] submit report (by: Dec 02 2019)
 4. [E][ ] project meeting (at: from Mon 2pm to 4pm)
 User: Assistant: OK, I've marked this task as not done yet:
   [T][ ] read book
 User: Assistant: Here are the tasks in your list:
 1. [T][ ] read book
 2. [T][ ] return book
-3. [D][ ] submit report (by: Sunday)
+3. [D][ ] submit report (by: Dec 02 2019)
 4. [E][ ] project meeting (at: from Mon 2pm to 4pm)
 User: Assistant: Bye. Hope to see you again soon!
