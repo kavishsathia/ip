@@ -15,6 +15,9 @@ import patrick.task.Deadline;
 import patrick.task.Event;
 import patrick.task.Todo;
 
+/**
+ * Parses user input and returns the corresponding {@link patrick.command.Command}.
+ */
 public class Parser {
     private static final Pattern TODO_PATTERN = Pattern.compile("^todo\\s+(.+)$");
     private static final Pattern DEADLINE_PATTERN = Pattern.compile("^deadline\\s+(.+)\\s+/by\\s+(.+)$");
@@ -23,6 +26,13 @@ public class Parser {
     private static final Pattern UNMARK_PATTERN = Pattern.compile("^unmark\\s+(\\d+)$");
     private static final Pattern DELETE_PATTERN = Pattern.compile("^delete\\s+(\\d+)$");
 
+    /**
+     * Parses the given user input string and returns the appropriate command.
+     *
+     * @param input The raw user input string.
+     * @return The command corresponding to the user input.
+     * @throws PatrickException If the input does not match any valid command format.
+     */
     public static Command parse(String input) throws PatrickException {
         if (input.equals("bye")) {
             return new ExitCommand();

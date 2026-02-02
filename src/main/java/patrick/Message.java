@@ -1,5 +1,8 @@
 package patrick;
 
+/**
+ * Contains all user-facing message strings used by the application.
+ */
 public enum Message {
     LOGO(" ____       _        _      _    \n"
             + "|  _ \\ __ _| |_ _ __(_) ___| | __\n"
@@ -39,6 +42,12 @@ public enum Message {
         return this.text;
     }
 
+    /**
+     * Formats this message with the given arguments using {@link String#format}.
+     *
+     * @param args The arguments to substitute into the message template.
+     * @return The formatted message string.
+     */
     public String format(Object... args) {
         return String.format(this.text, args);
     }

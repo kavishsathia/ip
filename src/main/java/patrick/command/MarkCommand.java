@@ -5,6 +5,9 @@ import patrick.Ui;
 import patrick.task.Task;
 import patrick.task.TaskList;
 
+/**
+ * Represents a command to mark a task as done.
+ */
 public class MarkCommand extends Command {
     private final int index;
 
