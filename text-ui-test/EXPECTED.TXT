@@ -15,6 +15,9 @@ User: Assistant: Here are the tasks in your list:
 2. [T][ ] return book
 3. [D][ ] submit report (by: Dec 02 2019)
 4. [E][ ] project meeting (at: from Mon 2pm to 4pm)
+User: Assistant: Here are the matching tasks in your list:
+1.[T][ ] read book
+2.[T][ ] return book
 User: Assistant: Nice! I've marked this task as done:
   [T][X] read book
 User: Assistant: Here are the tasks in your list:
