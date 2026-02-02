@@ -4,7 +4,7 @@ package patrick.task;
  * Represents a task that occurs during a time period.
  */
 public class Event extends Task {
-    protected String at;
+    private String at;
 
     /**
      * Constructs an Event with the given description and time period.

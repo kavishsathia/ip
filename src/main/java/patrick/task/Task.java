@@ -4,8 +4,8 @@ package patrick.task;
  * Represents a task with a description and completion status.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private String description;
+    private boolean isDone;
 
     /**
      * Constructs a Task with the given description, initially not done.
