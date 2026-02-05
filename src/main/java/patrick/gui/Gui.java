@@ -6,16 +6,22 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import patrick.Message;
+import patrick.Storage;
+import patrick.task.Deadline;
+import patrick.task.Event;
 import patrick.task.Task;
 import patrick.task.TaskList;
+import patrick.task.Todo;
 import patrick.ui.Ui;
 
 /**
@@ -23,13 +29,13 @@ import patrick.ui.Ui;
  */
 public class Gui implements Ui {
     private VBox dialogContainer;
+    private VBox taskListContainer;
     private TextField userInput;
     private String lastCommand;
     private final Object commandLock = new Object();
     private boolean commandReady = false;
-
-    private Stage stage;
-    private Scene scene;
+    private TaskList currentTasks;
+    private Storage storage;
 
     /**
      * Initializes the GUI components.
@@ -37,54 +43,156 @@ public class Gui implements Ui {
      * @param stage The primary stage for this application.
      */
     public void initialize(Stage stage) {
-        this.stage = stage;
-
-        ScrollPane scrollPane = new ScrollPane();
+        // Left panel - Chat
+        ScrollPane chatScrollPane = new ScrollPane();
         dialogContainer = new VBox();
-        scrollPane.setContent(dialogContainer);
+        chatScrollPane.setContent(dialogContainer);
 
         userInput = new TextField();
+        userInput.setPromptText("Type a command...");
         Button sendButton = new Button("Send");
 
-        AnchorPane mainLayout = new AnchorPane();
-        mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
+        HBox inputBox = new HBox(5);
+        inputBox.getChildren().addAll(userInput, sendButton);
+        HBox.setHgrow(userInput, Priority.ALWAYS);
 
-        scene = new Scene(mainLayout);
+        VBox leftPanel = new VBox(5);
+        leftPanel.getChildren().addAll(chatScrollPane, inputBox);
+        leftPanel.setPadding(new Insets(10));
+        VBox.setVgrow(chatScrollPane, Priority.ALWAYS);
 
-        stage.setScene(scene);
-        stage.show();
+        // Right panel - Task List
+        Label taskListHeader = new Label("Tasks");
+        taskListHeader.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-        stage.setTitle("Patrick");
-        stage.setResizable(false);
-        stage.setMinHeight(600.0);
-        stage.setMinWidth(400.0);
+        taskListContainer = new VBox(5);
+        taskListContainer.setPadding(new Insets(5));
 
-        mainLayout.setPrefSize(400.0, 600.0);
+        ScrollPane taskScrollPane = new ScrollPane();
+        taskScrollPane.setContent(taskListContainer);
+        taskScrollPane.setFitToWidth(true);
+        taskScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        scrollPane.setPrefSize(385, 535);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVvalue(1.0);
-        scrollPane.setFitToWidth(true);
+        VBox rightPanel = new VBox(10);
+        rightPanel.getChildren().addAll(taskListHeader, taskScrollPane);
+        rightPanel.setPadding(new Insets(10));
+        rightPanel.setStyle("-fx-background-color: #f5f5f5;");
+        VBox.setVgrow(taskScrollPane, Priority.ALWAYS);
+
+        // Main layout - two panels side by side
+        HBox mainLayout = new HBox(10);
+        mainLayout.getChildren().addAll(leftPanel, rightPanel);
+        HBox.setHgrow(leftPanel, Priority.ALWAYS);
+
+        // Configure sizes (65/35 ratio)
+        leftPanel.setPrefWidth(455);
+        leftPanel.setMinWidth(350);
+        rightPanel.setPrefWidth(245);
+        rightPanel.setMinWidth(180);
+
+        chatScrollPane.setPrefHeight(500);
+        chatScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        chatScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        chatScrollPane.setFitToWidth(true);
 
         dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
         dialogContainer.setSpacing(10);
         dialogContainer.setPadding(new Insets(10));
 
-        userInput.setPrefWidth(325.0);
+        sendButton.setPrefWidth(60);
 
-        sendButton.setPrefWidth(55.0);
-
-        AnchorPane.setTopAnchor(scrollPane, 1.0);
-        AnchorPane.setBottomAnchor(sendButton, 1.0);
-        AnchorPane.setRightAnchor(sendButton, 1.0);
-        AnchorPane.setLeftAnchor(userInput, 1.0);
-        AnchorPane.setBottomAnchor(userInput, 1.0);
+        Scene scene = new Scene(mainLayout, 700, 600);
+        stage.setScene(scene);
+        stage.setTitle("Patrick");
+        stage.setMinHeight(400);
+        stage.setMinWidth(550);
+        stage.show();
 
         sendButton.setOnAction(event -> handleUserInput());
         userInput.setOnAction(event -> handleUserInput());
 
-        dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
+        dialogContainer.heightProperty().addListener((observable) -> chatScrollPane.setVvalue(1.0));
+    }
+
+    /**
+     * Sets the task list reference for the right panel display.
+     *
+     * @param tasks The task list to display.
+     */
+    public void setTaskList(TaskList tasks) {
+        this.currentTasks = tasks;
+        refreshTaskPanel();
+    }
+
+    /**
+     * Sets the storage reference for saving task changes.
+     *
+     * @param storage The storage instance.
+     */
+    public void setStorage(Storage storage) {
+        this.storage = storage;
+    }
+
+    private String getTaskColor(Task task) {
+        if (task instanceof Deadline) {
+            return "#FFCDD2"; // Light red for deadlines
+        } else if (task instanceof Event) {
+            return "#C8E6C9"; // Light green for events
+        } else if (task instanceof Todo) {
+            return "#FFF9C4"; // Light yellow for todos
+        }
+        return "#FFFFFF"; // White default
+    }
+
+    private String getTaskDescription(Task task) {
+        String str = task.toString();
+        // Remove the [X] or [ ] status and type prefix like [T], [D], [E]
+        // Format is like: [T][ ] description or [D][X] description (by: date)
+        if (str.length() > 6) {
+            return str.substring(6); // Skip [T][ ] or similar
+        }
+        return str;
+    }
+
+    private void refreshTaskPanel() {
+        Platform.runLater(() -> {
+            taskListContainer.getChildren().clear();
+            if (currentTasks == null || currentTasks.size() == 0) {
+                Label emptyLabel = new Label("No tasks yet!");
+                emptyLabel.setStyle("-fx-text-fill: #888;");
+                taskListContainer.getChildren().add(emptyLabel);
+                return;
+            }
+            for (int i = 0; i < currentTasks.size(); i++) {
+                Task task = currentTasks.get(i);
+                final int index = i;
+
+                CheckBox checkBox = new CheckBox((i + 1) + ". " + getTaskDescription(task));
+                checkBox.setSelected(task.isDone());
+                checkBox.setWrapText(true);
+                checkBox.setMaxWidth(210);
+                checkBox.setPadding(new Insets(8));
+
+                String bgColor = getTaskColor(task);
+                checkBox.setStyle("-fx-background-color: " + bgColor + "; -fx-background-radius: 5;");
+
+                checkBox.setOnAction(event -> {
+                    if (checkBox.isSelected()) {
+                        task.markAsDone();
+                        addPatrickMessage("Nice! I've marked this task as done:\n  " + task);
+                    } else {
+                        task.markAsUndone();
+                        addPatrickMessage("OK, I've marked this task as not done yet:\n  " + task);
+                    }
+                    if (storage != null) {
+                        storage.writeFile(currentTasks);
+                    }
+                    refreshTaskPanel();
+                });
+
+                taskListContainer.getChildren().add(checkBox);
+            }
+        });
     }
 
     private void handleUserInput() {
@@ -161,26 +269,31 @@ public class Gui implements Ui {
             sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
         }
         addPatrickMessage(sb.toString().trim());
+        refreshTaskPanel();
     }
 
     @Override
     public void showTaskAdded(Task task) {
         addPatrickMessage("I've added \"" + task + "\"");
+        refreshTaskPanel();
     }
 
     @Override
     public void showTaskDeleted(Task task) {
         addPatrickMessage("Noted. I've removed this task:\n  " + task);
+        refreshTaskPanel();
     }
 
     @Override
     public void showTaskMarked(Task task) {
         addPatrickMessage("Nice! I've marked this task as done:\n  " + task);
+        refreshTaskPanel();
     }
 
     @Override
     public void showTaskUnmarked(Task task) {
         addPatrickMessage("OK, I've marked this task as not done yet:\n  " + task);
+        refreshTaskPanel();
     }
 
     @Override
@@ -194,7 +307,6 @@ public class Gui implements Ui {
 
     @Override
     public void showError(String message) {
-        // Extract just the message part without "Assistant:" and "User:" prompts
         String cleanMessage = message
                 .replace("Assistant: ", "")
                 .replace("\nUser: ", "")

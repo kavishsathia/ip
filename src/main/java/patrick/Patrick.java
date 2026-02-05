@@ -42,6 +42,24 @@ public class Patrick {
     }
 
     /**
+     * Returns the task list.
+     *
+     * @return The task list.
+     */
+    public TaskList getTasks() {
+        return tasks;
+    }
+
+    /**
+     * Returns the storage instance.
+     *
+     * @return The storage.
+     */
+    public Storage getStorage() {
+        return storage;
+    }
+
+    /**
      * Runs the main command loop, reading and executing user commands until exit.
      */
     public void run() {

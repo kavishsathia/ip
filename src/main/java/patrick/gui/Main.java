@@ -1,7 +1,6 @@
 package patrick.gui;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import patrick.Patrick;
@@ -17,6 +16,8 @@ public class Main extends Application {
         Gui gui = new Gui();
         gui.initialize(stage);
         patrick = new Patrick("data/patrick.txt", gui);
+        gui.setTaskList(patrick.getTasks());
+        gui.setStorage(patrick.getStorage());
 
         Thread patrickThread = new Thread(() -> patrick.run());
         patrickThread.setDaemon(true);
