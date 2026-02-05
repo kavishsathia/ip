@@ -2,6 +2,8 @@ package patrick;
 
 import patrick.command.Command;
 import patrick.task.TaskList;
+import patrick.ui.Tui;
+import patrick.ui.Ui;
 
 /**
  * Main class for the Patrick chatbot application.
@@ -14,11 +16,22 @@ public class Patrick {
 
     /**
      * Constructs a Patrick instance with the specified file path for storage.
+     * Uses the text-based UI by default.
      *
      * @param filePath Path to the file used for saving and loading tasks.
      */
     public Patrick(String filePath) {
-        ui = new Ui();
+        this(filePath, new Tui());
+    }
+
+    /**
+     * Constructs a Patrick instance with the specified file path and UI.
+     *
+     * @param filePath Path to the file used for saving and loading tasks.
+     * @param ui The UI implementation to use.
+     */
+    public Patrick(String filePath, Ui ui) {
+        this.ui = ui;
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
@@ -46,7 +59,7 @@ public class Patrick {
         }
     }
 
-    /** Entry point of the application. */
+    /** Entry point of the application (text-based UI). */
     public static void main(String[] args) {
         new Patrick("data/patrick.txt").run();
     }

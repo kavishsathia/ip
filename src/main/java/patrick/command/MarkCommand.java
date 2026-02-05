@@ -1,8 +1,8 @@
 package patrick.command;
 
 import patrick.Storage;
-import patrick.Ui;
 import patrick.task.Task;
+import patrick.ui.Ui;
 import patrick.task.TaskList;
 
 /**

@@ -1,8 +1,8 @@
 package patrick.command;
 
 import patrick.Storage;
-import patrick.Ui;
 import patrick.task.TaskList;
+import patrick.ui.Ui;
 
 /**
  * Represents a command to list all tasks.

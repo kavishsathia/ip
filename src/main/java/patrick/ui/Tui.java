@@ -1,51 +1,44 @@
-package patrick;
+package patrick.ui;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import patrick.Message;
 import patrick.task.Task;
 import patrick.task.TaskList;
 
 /**
- * Handles all user interface interactions, including reading input and displaying output.
+ * Text-based user interface implementation using standard input/output.
  */
-public class Ui {
+public class Tui implements Ui {
     private final Scanner scanner;
 
-    public Ui() {
+    public Tui() {
         this.scanner = new Scanner(System.in);
     }
 
-    /** Displays the welcome message. */
+    @Override
     public void showWelcome() {
         System.out.println(Message.GREETING.format(Message.LOGO));
         System.out.print(Message.PROMPT);
     }
 
-    /**
-     * Reads a line of user input from standard input.
-     *
-     * @return The user input string.
-     */
+    @Override
     public String readCommand() {
         return scanner.nextLine();
     }
 
-    /** Displays the goodbye message. */
+    @Override
     public void showBye() {
         System.out.println(Message.BYE);
     }
 
-    /** Displays the user input prompt. */
+    @Override
     public void showPrompt() {
         System.out.print(Message.USER_PROMPT);
     }
 
-    /**
-     * Displays all tasks in the given task list.
-     *
-     * @param tasks The task list to display.
-     */
+    @Override
     public void showTaskList(TaskList tasks) {
         System.out.print(Message.LIST_HEADER);
         StringBuilder s = new StringBuilder();
@@ -56,47 +49,27 @@ public class Ui {
         System.out.print(Message.USER_PROMPT);
     }
 
-    /**
-     * Displays a message confirming the task was added.
-     *
-     * @param task The task that was added.
-     */
+    @Override
     public void showTaskAdded(Task task) {
         System.out.print(Message.TASK_ADDED.format(task));
     }
 
-    /**
-     * Displays a message confirming the task was deleted.
-     *
-     * @param task The task that was deleted.
-     */
+    @Override
     public void showTaskDeleted(Task task) {
         System.out.print(Message.TASK_DELETED.format(task));
     }
 
-    /**
-     * Displays a message confirming the task was marked as done.
-     *
-     * @param task The task that was marked.
-     */
+    @Override
     public void showTaskMarked(Task task) {
         System.out.print(Message.TASK_MARKED.format(task));
     }
 
-    /**
-     * Displays a message confirming the task was marked as not done.
-     *
-     * @param task The task that was unmarked.
-     */
+    @Override
     public void showTaskUnmarked(Task task) {
         System.out.print(Message.TASK_UNMARKED.format(task));
     }
 
-    /**
-     * Displays the list of tasks matching a search keyword.
-     *
-     * @param matchingTasks The list of matching tasks.
-     */
+    @Override
     public void showFindResults(ArrayList<Task> matchingTasks) {
         System.out.print(Message.FIND_HEADER);
         StringBuilder s = new StringBuilder();
@@ -107,16 +80,12 @@ public class Ui {
         System.out.print(Message.USER_PROMPT);
     }
 
-    /**
-     * Displays an error message.
-     *
-     * @param message The error message to display.
-     */
+    @Override
     public void showError(String message) {
         System.out.print(message);
     }
 
-    /** Displays an error message when tasks cannot be loaded from storage. */
+    @Override
     public void showLoadingError() {
         System.out.print(Message.ERROR_STORAGE.format("Error loading tasks from file."));
     }

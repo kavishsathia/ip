@@ -5,3 +5,4 @@
 5. Refactored Patrick.java to use the Message enum instead of hardcoded strings
 6. Extracted Ui, TaskList, Parser (with regex), and Command class hierarchy from Patrick.java to follow single-responsibility principle
 7. Organized all classes into packages (patrick, patrick.task, patrick.command) and updated test script accordingly
+8. Helped in GUI design
