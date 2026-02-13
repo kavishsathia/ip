@@ -15,7 +15,7 @@ import patrick.task.TaskList;
 import patrick.task.Todo;
 
 /**
- * Handles reading from and writing to the task data file.
+ * Handles reading from and writing to the task data file. 
  */
 public class Storage {
     private final String filePath;
