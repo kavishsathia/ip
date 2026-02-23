@@ -45,57 +45,57 @@ public class Parser {
             return new ListCommand();
         }
 
-        Matcher matcher;
-
-        matcher = MARK_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(1)) - 1;
+        Matcher markMatcher = MARK_PATTERN.matcher(input);
+        if (markMatcher.matches()) {
+            int index = Integer.parseInt(markMatcher.group(1)) - 1;
             return new MarkCommand(index);
         }
 
-        matcher = UNMARK_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(1)) - 1;
+        Matcher unmarkMatcher = UNMARK_PATTERN.matcher(input);
+        if (unmarkMatcher.matches()) {
+            int index = Integer.parseInt(unmarkMatcher.group(1)) - 1;
             return new UnmarkCommand(index);
         }
 
-        matcher = DELETE_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            int index = Integer.parseInt(matcher.group(1)) - 1;
+        Matcher deleteMatcher = DELETE_PATTERN.matcher(input);
+        if (deleteMatcher.matches()) {
+            int index = Integer.parseInt(deleteMatcher.group(1)) - 1;
             return new DeleteCommand(index);
         }
 
-        matcher = FIND_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            return new FindCommand(matcher.group(1));
+        Matcher findMatcher = FIND_PATTERN.matcher(input);
+        if (findMatcher.matches()) {
+            return new FindCommand(findMatcher.group(1));
         }
 
-        matcher = TODO_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            return new AddCommand(new Todo(matcher.group(1)));
+        Matcher todoMatcher = TODO_PATTERN.matcher(input);
+        if (todoMatcher.matches()) {
+            return new AddCommand(new Todo(todoMatcher.group(1)));
         }
 
-        matcher = DEADLINE_PATTERN.matcher(input);
-        if (matcher.matches()) {
+        Matcher deadlineMatcher = DEADLINE_PATTERN.matcher(input);
+        if (deadlineMatcher.matches()) {
             try {
-                Deadline deadline = Deadline.parse(matcher.group(1), matcher.group(2));
+                Deadline deadline = Deadline.parse(deadlineMatcher.group(1), deadlineMatcher.group(2));
                 return new AddCommand(deadline);
             } catch (DateTimeParseException e) {
                 throw new PatrickException(Message.ERROR_INVALID_DATE.toString());
             }
         }
 
-        matcher = EVENT_PATTERN.matcher(input);
-        if (matcher.matches()) {
-            String description = matcher.group(1);
-            String start = matcher.group(2);
-            String end = matcher.group(3);
+        Matcher eventMatcher = EVENT_PATTERN.matcher(input);
+        if (eventMatcher.matches()) {
+            String description = eventMatcher.group(1);
+            String start = eventMatcher.group(2);
+            String end = eventMatcher.group(3);
             return new AddCommand(new Event(description, "from " + start + " to " + end));
         }
 
-        if (input.startsWith("mark") || input.startsWith("unmark")) {
-            throw new PatrickException(input.startsWith("mark")
-                    ? Message.ERROR_INVALID_MARK.toString() : Message.ERROR_INVALID_UNMARK.toString());
+        if (input.startsWith("unmark")) {
+            throw new PatrickException(Message.ERROR_INVALID_UNMARK.toString());
+        }
+        if (input.startsWith("mark")) {
+            throw new PatrickException(Message.ERROR_INVALID_MARK.toString());
         }
         if (input.startsWith("delete")) {
             throw new PatrickException(Message.ERROR_INVALID_DELETE.toString());

@@ -146,10 +146,10 @@ public class Gui implements Ui {
 
     private String getTaskDescription(Task task) {
         String str = task.toString();
-        // Remove the [X] or [ ] status and type prefix like [T], [D], [E]
-        // Format is like: [T][ ] description or [D][X] description (by: date)
-        if (str.length() > 6) {
-            return str.substring(6); // Skip [T][ ] or similar
+        // Task.toString() format: [T][ ] description — strip the "[T][ ] " prefix
+        int prefixLength = "[T][ ] ".length();
+        if (str.length() > prefixLength) {
+            return str.substring(prefixLength);
         }
         return str;
     }
@@ -179,15 +179,14 @@ public class Gui implements Ui {
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
                         task.markAsDone();
-                        addPatrickMessage("Nice! I've marked this task as done:\n  " + task);
+                        showTaskMarked(task);
                     } else {
                         task.markAsUndone();
-                        addPatrickMessage("OK, I've marked this task as not done yet:\n  " + task);
+                        showTaskUnmarked(task);
                     }
                     if (storage != null) {
                         storage.writeFile(currentTasks);
                     }
-                    refreshTaskPanel();
                 });
 
                 taskListContainer.getChildren().add(checkBox);
@@ -264,11 +263,8 @@ public class Gui implements Ui {
 
     @Override
     public void showTaskList(TaskList tasks) {
-        StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-        }
-        addPatrickMessage(sb.toString().trim());
+        addPatrickMessage("Here are the tasks in your list:\n"
+                + formatNumberedList(tasks.getTasks()));
         refreshTaskPanel();
     }
 
@@ -298,11 +294,16 @@ public class Gui implements Ui {
 
     @Override
     public void showFindResults(ArrayList<Task> matchingTasks) {
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            sb.append(i + 1).append(". ").append(matchingTasks.get(i)).append("\n");
+        addPatrickMessage("Here are the matching tasks in your list:\n"
+                + formatNumberedList(matchingTasks));
+    }
+
+    private String formatNumberedList(ArrayList<Task> tasks) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
         }
-        addPatrickMessage(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     @Override
