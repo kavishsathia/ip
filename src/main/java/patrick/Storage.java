@@ -26,6 +26,8 @@ public class Storage {
      * @param filePath Path to the data file.
      */
     public Storage(String filePath) {
+        assert filePath != null : "Storage file path should not be null";
+        assert !filePath.isEmpty() : "Storage file path should not be empty";
         this.filePath = filePath;
     }
 
@@ -98,6 +100,7 @@ public class Storage {
      * @param tasks The task list to save.
      */
     public void writeFile(TaskList tasks) {
+        assert tasks != null : "TaskList to write should not be null";
         Path path = Paths.get(filePath);
 
         try {

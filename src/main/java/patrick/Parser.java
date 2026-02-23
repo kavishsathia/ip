@@ -36,6 +36,7 @@ public class Parser {
      * @throws PatrickException If the input does not match any valid command format.
      */
     public static Command parse(String input) throws PatrickException {
+        assert input != null : "Parser input should not be null";
         if (input.equals("bye")) {
             return new ExitCommand();
         }
