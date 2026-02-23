@@ -90,9 +90,11 @@ public class Parser {
             return new AddCommand(new Event(description, "from " + start + " to " + end));
         }
 
-        if (input.startsWith("mark") || input.startsWith("unmark")) {
-            throw new PatrickException(input.startsWith("mark")
-                    ? Message.ERROR_INVALID_MARK.toString() : Message.ERROR_INVALID_UNMARK.toString());
+        if (input.startsWith("unmark")) {
+            throw new PatrickException(Message.ERROR_INVALID_UNMARK.toString());
+        }
+        if (input.startsWith("mark")) {
+            throw new PatrickException(Message.ERROR_INVALID_MARK.toString());
         }
         if (input.startsWith("delete")) {
             throw new PatrickException(Message.ERROR_INVALID_DELETE.toString());
