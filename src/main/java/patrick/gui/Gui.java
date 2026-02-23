@@ -43,14 +43,45 @@ public class Gui implements Ui {
      * @param stage The primary stage for this application.
      */
     public void initialize(Stage stage) {
-        // Left panel - Chat
         ScrollPane chatScrollPane = new ScrollPane();
+        VBox leftPanel = createChatPanel(chatScrollPane);
+        VBox rightPanel = createTaskPanel();
+
+        HBox mainLayout = new HBox(10);
+        mainLayout.getChildren().addAll(leftPanel, rightPanel);
+        HBox.setHgrow(leftPanel, Priority.ALWAYS);
+        leftPanel.setPrefWidth(455);
+        leftPanel.setMinWidth(350);
+        rightPanel.setPrefWidth(245);
+        rightPanel.setMinWidth(180);
+
+        Scene scene = new Scene(mainLayout, 700, 600);
+        stage.setScene(scene);
+        stage.setTitle("Patrick");
+        stage.setMinHeight(400);
+        stage.setMinWidth(550);
+        stage.show();
+
+        dialogContainer.heightProperty().addListener((observable) -> chatScrollPane.setVvalue(1.0));
+    }
+
+    private VBox createChatPanel(ScrollPane chatScrollPane) {
         dialogContainer = new VBox();
+        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        dialogContainer.setSpacing(10);
+        dialogContainer.setPadding(new Insets(10));
         chatScrollPane.setContent(dialogContainer);
+        chatScrollPane.setPrefHeight(500);
+        chatScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        chatScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        chatScrollPane.setFitToWidth(true);
 
         userInput = new TextField();
         userInput.setPromptText("Type a command...");
         Button sendButton = new Button("Send");
+        sendButton.setPrefWidth(60);
+        sendButton.setOnAction(event -> handleUserInput());
+        userInput.setOnAction(event -> handleUserInput());
 
         HBox inputBox = new HBox(5);
         inputBox.getChildren().addAll(userInput, sendButton);
@@ -60,8 +91,10 @@ public class Gui implements Ui {
         leftPanel.getChildren().addAll(chatScrollPane, inputBox);
         leftPanel.setPadding(new Insets(10));
         VBox.setVgrow(chatScrollPane, Priority.ALWAYS);
+        return leftPanel;
+    }
 
-        // Right panel - Task List
+    private VBox createTaskPanel() {
         Label taskListHeader = new Label("Patrick's To-Do Rock");
         taskListHeader.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #880E4F;");
 
@@ -78,40 +111,7 @@ public class Gui implements Ui {
         rightPanel.setPadding(new Insets(10));
         rightPanel.setStyle("-fx-background-color: #FFF3E0;");
         VBox.setVgrow(taskScrollPane, Priority.ALWAYS);
-
-        // Main layout - two panels side by side
-        HBox mainLayout = new HBox(10);
-        mainLayout.getChildren().addAll(leftPanel, rightPanel);
-        HBox.setHgrow(leftPanel, Priority.ALWAYS);
-
-        // Configure sizes (65/35 ratio)
-        leftPanel.setPrefWidth(455);
-        leftPanel.setMinWidth(350);
-        rightPanel.setPrefWidth(245);
-        rightPanel.setMinWidth(180);
-
-        chatScrollPane.setPrefHeight(500);
-        chatScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        chatScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        chatScrollPane.setFitToWidth(true);
-
-        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        dialogContainer.setSpacing(10);
-        dialogContainer.setPadding(new Insets(10));
-
-        sendButton.setPrefWidth(60);
-
-        Scene scene = new Scene(mainLayout, 700, 600);
-        stage.setScene(scene);
-        stage.setTitle("Patrick");
-        stage.setMinHeight(400);
-        stage.setMinWidth(550);
-        stage.show();
-
-        sendButton.setOnAction(event -> handleUserInput());
-        userInput.setOnAction(event -> handleUserInput());
-
-        dialogContainer.heightProperty().addListener((observable) -> chatScrollPane.setVvalue(1.0));
+        return rightPanel;
     }
 
     /**
