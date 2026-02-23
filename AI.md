@@ -15,3 +15,4 @@
 15. Eliminated duplicated mark/unmark message strings in Gui.java — checkbox handler now calls `showTaskMarked`/`showTaskUnmarked` instead of duplicating their logic
 16. Replaced magic number `6` in Gui.java `getTaskDescription` with self-documenting `"[T][ ] ".length()`
 17. Refactored TaskList.find() to use Java streams (filter + collect) instead of a for-loop
+18. Gave Patrick a Patrick Star (SpongeBob) personality — rewrote all Message enum phrases and Gui response strings in Patrick Star's voice, updated GUI color theme to pink/sandy Bikini Bottom palette, renamed task panel header to "Patrick's To-Do Rock"

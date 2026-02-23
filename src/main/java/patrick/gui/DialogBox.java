@@ -34,13 +34,13 @@ public class DialogBox extends HBox {
         avatar.setShape(circle);
 
         if (isUser) {
-            text.setStyle("-fx-background-color: #DCF8C6; -fx-background-radius: 10;");
-            avatar.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+            text.setStyle("-fx-background-color: #BBDEFB; -fx-background-radius: 10;");
+            avatar.setStyle("-fx-background-color: #1976D2; -fx-text-fill: white;");
             this.setAlignment(Pos.CENTER_RIGHT);
             this.getChildren().addAll(text, avatar);
         } else {
-            text.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 10;");
-            avatar.setStyle("-fx-background-color: #FF9800; -fx-text-fill: white;");
+            text.setStyle("-fx-background-color: #FCE4EC; -fx-background-radius: 10;");
+            avatar.setStyle("-fx-background-color: #F48FB1; -fx-text-fill: white;");
             this.setAlignment(Pos.CENTER_LEFT);
             this.getChildren().addAll(avatar, text);
         }

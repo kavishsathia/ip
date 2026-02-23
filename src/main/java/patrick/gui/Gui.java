@@ -62,8 +62,8 @@ public class Gui implements Ui {
         VBox.setVgrow(chatScrollPane, Priority.ALWAYS);
 
         // Right panel - Task List
-        Label taskListHeader = new Label("Tasks");
-        taskListHeader.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        Label taskListHeader = new Label("Patrick's To-Do Rock");
+        taskListHeader.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #880E4F;");
 
         taskListContainer = new VBox(5);
         taskListContainer.setPadding(new Insets(5));
@@ -76,7 +76,7 @@ public class Gui implements Ui {
         VBox rightPanel = new VBox(10);
         rightPanel.getChildren().addAll(taskListHeader, taskScrollPane);
         rightPanel.setPadding(new Insets(10));
-        rightPanel.setStyle("-fx-background-color: #f5f5f5;");
+        rightPanel.setStyle("-fx-background-color: #FFF3E0;");
         VBox.setVgrow(taskScrollPane, Priority.ALWAYS);
 
         // Main layout - two panels side by side
@@ -225,7 +225,8 @@ public class Gui implements Ui {
 
     @Override
     public void showWelcome() {
-        String welcomeText = "Hello from Patrick!\nWhat can I do for you?";
+        String welcomeText = "Hi! I'm Patrick Star!\nIs mayonnaise an instrument? "
+                + "No? Then what can I do for you?";
         addPatrickMessage(welcomeText);
     }
 
@@ -247,7 +248,7 @@ public class Gui implements Ui {
 
     @Override
     public void showBye() {
-        addPatrickMessage("Bye. Hope to see you again soon!");
+        addPatrickMessage("Uhh... I gotta go. My house is calling me. Bye!");
         Platform.runLater(() -> {
             try {
                 Thread.sleep(1000);
@@ -265,38 +266,38 @@ public class Gui implements Ui {
 
     @Override
     public void showTaskList(TaskList tasks) {
-        addPatrickMessage("Here are the tasks in your list:\n"
+        addPatrickMessage("Uhhh... let me think... oh yeah! Here's your stuff:\n"
                 + formatNumberedList(tasks.getTasks()));
         refreshTaskPanel();
     }
 
     @Override
     public void showTaskAdded(Task task) {
-        addPatrickMessage("I've added \"" + task + "\"");
+        addPatrickMessage("Oooh! I remembered something! I added \"" + task + "\"");
         refreshTaskPanel();
     }
 
     @Override
     public void showTaskDeleted(Task task) {
-        addPatrickMessage("Noted. I've removed this task:\n  " + task);
+        addPatrickMessage("It's gone! I made it disappear:\n  " + task);
         refreshTaskPanel();
     }
 
     @Override
     public void showTaskMarked(Task task) {
-        addPatrickMessage("Nice! I've marked this task as done:\n  " + task);
+        addPatrickMessage("I did it! I marked this thing as done:\n  " + task);
         refreshTaskPanel();
     }
 
     @Override
     public void showTaskUnmarked(Task task) {
-        addPatrickMessage("OK, I've marked this task as not done yet:\n  " + task);
+        addPatrickMessage("Wait... it's NOT done? Okay, unmarked:\n  " + task);
         refreshTaskPanel();
     }
 
     @Override
     public void showFindResults(ArrayList<Task> matchingTasks) {
-        addPatrickMessage("Here are the matching tasks in your list:\n"
+        addPatrickMessage("I found some stuff! Look look look:\n"
                 + formatNumberedList(matchingTasks));
     }
 
@@ -319,6 +320,6 @@ public class Gui implements Ui {
 
     @Override
     public void showLoadingError() {
-        addPatrickMessage("Error loading tasks from file.");
+        addPatrickMessage("Uhh... I forgot where I put your stuff. Starting fresh!");
     }
 }
