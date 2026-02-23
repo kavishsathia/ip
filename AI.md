@@ -11,3 +11,4 @@
 11. Added explanatory comments to silent catch blocks in Storage.java to clarify why exceptions are swallowed
 12. Extracted `parseTaskFromLine` method in Storage.java to eliminate data flow anomaly (`Task task = null` pre-assignment)
 13. Extracted `formatNumberedList` helper in Tui.java to eliminate duplicate task-listing loops in `showTaskList` and `showFindResults`
+14. Extracted `formatNumberedList` helper in Gui.java to eliminate the same duplicate task-listing loops

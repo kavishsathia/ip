@@ -264,11 +264,8 @@ public class Gui implements Ui {
 
     @Override
     public void showTaskList(TaskList tasks) {
-        StringBuilder sb = new StringBuilder("Here are the tasks in your list:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-        }
-        addPatrickMessage(sb.toString().trim());
+        addPatrickMessage("Here are the tasks in your list:\n"
+                + formatNumberedList(tasks.getTasks()));
         refreshTaskPanel();
     }
 
@@ -298,11 +295,16 @@ public class Gui implements Ui {
 
     @Override
     public void showFindResults(ArrayList<Task> matchingTasks) {
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            sb.append(i + 1).append(". ").append(matchingTasks.get(i)).append("\n");
+        addPatrickMessage("Here are the matching tasks in your list:\n"
+                + formatNumberedList(matchingTasks));
+    }
+
+    private String formatNumberedList(ArrayList<Task> tasks) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
         }
-        addPatrickMessage(sb.toString().trim());
+        return sb.toString().trim();
     }
 
     @Override
