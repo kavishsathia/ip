@@ -1,6 +1,7 @@
 package patrick.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Represents a list of tasks and provides operations to modify it.
@@ -61,13 +62,9 @@ public class TaskList {
      * @return A list of matching tasks.
      */
     public ArrayList<Task> find(String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.toString().contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+        return tasks.stream()
+                .filter(task -> task.toString().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
