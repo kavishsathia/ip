@@ -174,7 +174,9 @@ public class Gui implements Ui {
                 checkBox.setPadding(new Insets(8));
 
                 String bgColor = getTaskColor(task);
-                checkBox.setStyle("-fx-background-color: " + bgColor + "; -fx-background-radius: 5;");
+                String strikethrough = task.isDone() ? " -fx-strikethrough: true; -fx-text-fill: #888;" : "";
+                checkBox.setStyle("-fx-background-color: " + bgColor
+                        + "; -fx-background-radius: 5;" + strikethrough);
 
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
