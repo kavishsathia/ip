@@ -6,3 +6,4 @@
 6. Extracted Ui, TaskList, Parser (with regex), and Command class hierarchy from Patrick.java to follow single-responsibility principle
 7. Organized all classes into packages (patrick, patrick.task, patrick.command) and updated test script accordingly
 8. Helped in GUI design, and TaskList design (just design)
+9. Refactored Parser.java to eliminate variable recycling — replaced single reused `matcher` variable with individually scoped variables (`markMatcher`, `unmarkMatcher`, etc.)
