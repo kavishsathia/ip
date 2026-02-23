@@ -10,3 +10,4 @@
 10. Simplified complicated conditional expression in Parser.java — split combined mark/unmark error handling with ternary into separate, clear `if` blocks
 11. Added explanatory comments to silent catch blocks in Storage.java to clarify why exceptions are swallowed
 12. Extracted `parseTaskFromLine` method in Storage.java to eliminate data flow anomaly (`Task task = null` pre-assignment)
+13. Extracted `formatNumberedList` helper in Tui.java to eliminate duplicate task-listing loops in `showTaskList` and `showFindResults`
