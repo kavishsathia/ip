@@ -40,7 +40,7 @@ public class ParserTest {
 
     @Test
     public void parse_validEvent_returnsAddCommand() throws PatrickException {
-        assertInstanceOf(AddCommand.class, Parser.parse("event meeting /from mon /to tue"));
+        assertInstanceOf(AddCommand.class, Parser.parse("event meeting /from 2024-01-01 /to 2024-01-02"));
     }
 
     @Test

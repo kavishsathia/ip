@@ -94,10 +94,15 @@ public class Storage {
             }
             break;
         case "E":
-            if (parts.length < 4) {
+            if (parts.length < 5) {
                 return null;
             }
-            task = new Event(description, parts[3].trim());
+            try {
+                task = Event.parse(description, parts[3].trim(), parts[4].trim());
+            } catch (Exception e) {
+                // Skip lines with invalid date formats rather than failing the whole load
+                return null;
+            }
             break;
         default:
             return null;

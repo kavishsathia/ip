@@ -1,5 +1,7 @@
 package patrick.task;
 
+import java.time.LocalDate;
+
 /**
  * Represents a task with a description and completion status.
  */
@@ -45,6 +47,24 @@ public class Task {
     /** Marks this task as not done. */
     public void markAsUndone() {
         this.isDone = false;
+    }
+
+    /**
+     * Returns the date associated with this task, or {@code null} if none.
+     *
+     * @return The task's date, or null.
+     */
+    public LocalDate getDate() {
+        return null;
+    }
+
+    /**
+     * Returns the description of this task.
+     *
+     * @return The task description.
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**

@@ -36,6 +36,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public LocalDate getDate() {
+        return by;
+    }
+
+    @Override
     public String toFileString() {
         return "D | " + super.toFileString() + " | " + this.by;
     }

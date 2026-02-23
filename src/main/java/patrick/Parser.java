@@ -27,6 +27,8 @@ public class Parser {
     private static final Pattern UNMARK_PATTERN = Pattern.compile("^unmark\\s+(\\d+)$");
     private static final Pattern DELETE_PATTERN = Pattern.compile("^delete\\s+(\\d+)$");
     private static final Pattern FIND_PATTERN = Pattern.compile("^find\\s+(.+)$");
+    private static final Pattern LIST_SORT_PATTERN = Pattern.compile(
+            "^list\\s+/(asc|desc)\\s+(name|time)$");
 
     /**
      * Parses the given user input string and returns the appropriate command.
@@ -43,6 +45,13 @@ public class Parser {
 
         if (input.equals("list")) {
             return new ListCommand();
+        }
+
+        Matcher listSortMatcher = LIST_SORT_PATTERN.matcher(input);
+        if (listSortMatcher.matches()) {
+            String order = listSortMatcher.group(1);
+            String field = listSortMatcher.group(2);
+            return new ListCommand(field, order.equals("asc"));
         }
 
         Matcher markMatcher = MARK_PATTERN.matcher(input);
@@ -85,10 +94,13 @@ public class Parser {
 
         Matcher eventMatcher = EVENT_PATTERN.matcher(input);
         if (eventMatcher.matches()) {
-            String description = eventMatcher.group(1);
-            String start = eventMatcher.group(2);
-            String end = eventMatcher.group(3);
-            return new AddCommand(new Event(description, "from " + start + " to " + end));
+            try {
+                Event event = Event.parse(eventMatcher.group(1),
+                        eventMatcher.group(2), eventMatcher.group(3));
+                return new AddCommand(event);
+            } catch (DateTimeParseException e) {
+                throw new PatrickException(Message.ERROR_INVALID_DATE.toString());
+            }
         }
 
         if (input.startsWith("unmark")) {
