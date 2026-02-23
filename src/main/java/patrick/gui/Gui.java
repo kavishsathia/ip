@@ -146,10 +146,10 @@ public class Gui implements Ui {
 
     private String getTaskDescription(Task task) {
         String str = task.toString();
-        // Remove the [X] or [ ] status and type prefix like [T], [D], [E]
-        // Format is like: [T][ ] description or [D][X] description (by: date)
-        if (str.length() > 6) {
-            return str.substring(6); // Skip [T][ ] or similar
+        // Task.toString() format: [T][ ] description — strip the "[T][ ] " prefix
+        int prefixLength = "[T][ ] ".length();
+        if (str.length() > prefixLength) {
+            return str.substring(prefixLength);
         }
         return str;
     }
