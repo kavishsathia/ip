@@ -51,47 +51,60 @@ public class Storage {
         }
 
         for (String line : lines) {
-            String[] parts = line.split(" \\| ");
-            if (parts.length < 3) {
-                continue;
+            Task task = parseTaskFromLine(line);
+            if (task != null) {
+                tasks.add(task);
             }
-            String type = parts[0].trim();
-            boolean isDone = parts[1].trim().equals("1");
-            String description = parts[2].trim();
-
-            Task task = null;
-            switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                if (parts.length < 4) {
-                    continue;
-                }
-                try {
-                    task = Deadline.parse(description, parts[3].trim());
-                } catch (Exception e) {
-                    // Skip lines with invalid date formats rather than failing the whole load
-                    continue;
-                }
-                break;
-            case "E":
-                if (parts.length < 4) {
-                    continue;
-                }
-                task = new Event(description, parts[3].trim());
-                break;
-            default:
-                continue;
-            }
-
-            if (isDone) {
-                task.markAsDone();
-            }
-            tasks.add(task);
         }
 
         return tasks;
+    }
+
+    /**
+     * Parses a single line from the data file into a Task.
+     *
+     * @param line A line from the data file.
+     * @return The parsed Task, or {@code null} if the line is malformed.
+     */
+    private Task parseTaskFromLine(String line) {
+        String[] parts = line.split(" \\| ");
+        if (parts.length < 3) {
+            return null;
+        }
+        String type = parts[0].trim();
+        boolean isDone = parts[1].trim().equals("1");
+        String description = parts[2].trim();
+
+        Task task;
+        switch (type) {
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            if (parts.length < 4) {
+                return null;
+            }
+            try {
+                task = Deadline.parse(description, parts[3].trim());
+            } catch (Exception e) {
+                // Skip lines with invalid date formats rather than failing the whole load
+                return null;
+            }
+            break;
+        case "E":
+            if (parts.length < 4) {
+                return null;
+            }
+            task = new Event(description, parts[3].trim());
+            break;
+        default:
+            return null;
+        }
+
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
     }
 
     /**
