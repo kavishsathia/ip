@@ -179,15 +179,14 @@ public class Gui implements Ui {
                 checkBox.setOnAction(event -> {
                     if (checkBox.isSelected()) {
                         task.markAsDone();
-                        addPatrickMessage("Nice! I've marked this task as done:\n  " + task);
+                        showTaskMarked(task);
                     } else {
                         task.markAsUndone();
-                        addPatrickMessage("OK, I've marked this task as not done yet:\n  " + task);
+                        showTaskUnmarked(task);
                     }
                     if (storage != null) {
                         storage.writeFile(currentTasks);
                     }
-                    refreshTaskPanel();
                 });
 
                 taskListContainer.getChildren().add(checkBox);

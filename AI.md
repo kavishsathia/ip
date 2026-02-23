@@ -12,3 +12,4 @@
 12. Extracted `parseTaskFromLine` method in Storage.java to eliminate data flow anomaly (`Task task = null` pre-assignment)
 13. Extracted `formatNumberedList` helper in Tui.java to eliminate duplicate task-listing loops in `showTaskList` and `showFindResults`
 14. Extracted `formatNumberedList` helper in Gui.java to eliminate the same duplicate task-listing loops
+15. Eliminated duplicated mark/unmark message strings in Gui.java — checkbox handler now calls `showTaskMarked`/`showTaskUnmarked` instead of duplicating their logic
