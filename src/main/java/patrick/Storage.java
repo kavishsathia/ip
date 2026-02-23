@@ -128,11 +128,11 @@ public class Storage {
             if (parent != null && !Files.exists(parent)) {
                 Files.createDirectories(parent);
             }
-            FileWriter writer = new FileWriter(path.toFile());
-            for (Task task : tasks.getTasks()) {
-                writer.write(task.toFileString() + System.lineSeparator());
+            try (FileWriter writer = new FileWriter(path.toFile())) {
+                for (Task task : tasks.getTasks()) {
+                    writer.write(task.toFileString() + System.lineSeparator());
+                }
             }
-            writer.close();
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
         }
