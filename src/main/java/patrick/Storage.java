@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import patrick.task.Deadline;
 import patrick.task.Event;
@@ -37,11 +39,10 @@ public class Storage {
      * @return A list of tasks read from the file, or an empty list if the file does not exist.
      */
     public ArrayList<Task> load() {
-        ArrayList<Task> tasks = new ArrayList<>();
         Path path = Paths.get(filePath);
 
         if (!Files.exists(path)) {
-            return tasks;
+            return new ArrayList<>();
         }
 
         List<String> lines;
@@ -49,17 +50,13 @@ public class Storage {
             lines = Files.readAllLines(path);
         } catch (IOException e) {
             // File exists but cannot be read; return empty list to start fresh
-            return tasks;
+            return new ArrayList<>();
         }
 
-        for (String line : lines) {
-            Task task = parseTaskFromLine(line);
-            if (task != null) {
-                tasks.add(task);
-            }
-        }
-
-        return tasks;
+        return lines.stream()
+                .map(this::parseTaskFromLine)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
