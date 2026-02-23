@@ -12,6 +12,7 @@ public class UnmarkCommand extends Command {
     private final int index;
 
     public UnmarkCommand(int index) {
+        assert index >= 0 : "Unmark index should not be negative";
         this.index = index;
     }
 

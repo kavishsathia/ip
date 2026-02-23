@@ -41,11 +41,7 @@ public class Tui implements Ui {
     @Override
     public void showTaskList(TaskList tasks) {
         System.out.print(Message.LIST_HEADER);
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < tasks.size(); i++) {
-            s.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
-        }
-        System.out.print(s);
+        System.out.print(formatNumberedList(tasks.getTasks()));
         System.out.print(Message.USER_PROMPT);
     }
 
@@ -72,12 +68,16 @@ public class Tui implements Ui {
     @Override
     public void showFindResults(ArrayList<Task> matchingTasks) {
         System.out.print(Message.FIND_HEADER);
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < matchingTasks.size(); i++) {
-            s.append(i + 1).append(".").append(matchingTasks.get(i)).append("\n");
-        }
-        System.out.print(s);
+        System.out.print(formatNumberedList(matchingTasks));
         System.out.print(Message.USER_PROMPT);
+    }
+
+    private String formatNumberedList(ArrayList<Task> tasks) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < tasks.size(); i++) {
+            s.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return s.toString();
     }
 
     @Override

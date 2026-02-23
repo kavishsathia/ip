@@ -31,6 +31,8 @@ public class Patrick {
      * @param ui The UI implementation to use.
      */
     public Patrick(String filePath, Ui ui) {
+        assert filePath != null : "File path should not be null";
+        assert ui != null : "UI should not be null";
         this.ui = ui;
         storage = new Storage(filePath);
         try {

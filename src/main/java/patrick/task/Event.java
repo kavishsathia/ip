@@ -14,6 +14,8 @@ public class Event extends Task {
      */
     public Event(String description, String at) {
         super(description);
+        assert at != null : "Event time period should not be null";
+        assert !at.isEmpty() : "Event time period should not be empty";
         this.at = at;
     }
 
