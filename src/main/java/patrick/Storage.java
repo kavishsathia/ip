@@ -46,6 +46,7 @@ public class Storage {
         try {
             lines = Files.readAllLines(path);
         } catch (IOException e) {
+            // File exists but cannot be read; return empty list to start fresh
             return tasks;
         }
 
@@ -70,6 +71,7 @@ public class Storage {
                 try {
                     task = Deadline.parse(description, parts[3].trim());
                 } catch (Exception e) {
+                    // Skip lines with invalid date formats rather than failing the whole load
                     continue;
                 }
                 break;
