@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories {
@@ -12,6 +11,15 @@ repositories {
 dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
+
+    def javaFxVersion = '17.0.6'
+    String[] javaFxModules = ['javafx-base', 'javafx-controls', 'javafx-graphics']
+    String[] platforms = ['win', 'mac', 'linux']
+    for (module in javaFxModules) {
+        for (platform in platforms) {
+            implementation "org.openjfx:${module}:${javaFxVersion}:${platform}"
+        }
+    }
 }
 
 test {
@@ -32,13 +40,10 @@ application {
     mainClass.set("patrick.gui.Launcher")
 }
 
-javafx {
-    version = "17.0.6"
-    modules = ['javafx.controls']
-}
-
 shadowJar {
     archiveFileName = 'patrick.jar'
+    mergeServiceFiles()
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA'
 }
 
 run{
